@@ -7,8 +7,11 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+
 </head>
 <body>
+
+    <h1 style="text-align:center"> BUKU </h1>
 
     <table class="table table-striped">
         <thead>
@@ -30,6 +33,19 @@
                     <td>{{ $buku->penulis }}</td>
                     <td>{{ "Rp ".$buku->harga }}</td>
                     <td>{{ $buku->tgl_terbit }}</td>
+                    <td>
+
+                        <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
+                            @csrf
+                            <button class="btn btn-danger" onClick="return confirm('Mau hapus yakin?')">Hapus </button>
+                        </form>
+
+                        <form  action="{{ route('buku.edit', $buku->id) }}" method="post">
+                            @csrf
+                            <button class="btn btn-warning"> Edit </button>
+                        </form>
+
+                    </td>
                 </tr>
             @endforeach
         </tbody>
@@ -43,6 +59,17 @@
             </tr>
         </tfoot>
     </table>
+
+    <div>
+        <p align='right'>
+            <a href="{{ route('buku.create') }}" class="btn btn-primary">TAMBAH BUKU</a>
+          </p>
+
+    </div>
+
+
+
+
 
 </body>
 </html>

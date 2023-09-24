@@ -21,7 +21,7 @@ class BukuController extends Controller
         // menghitung total harga
         $total_harga = 0;
         foreach ($data_buku as $buku) {
-            $total_harga += $buku->harga;
+            $total_harga = $total_harga +  (int)$buku->harga;
         }
 
         // Untuk memberi nomor baris data
@@ -38,6 +38,7 @@ class BukuController extends Controller
     public function create()
     {
         //
+        return view('create');
     }
 
     /**
@@ -46,6 +47,14 @@ class BukuController extends Controller
     public function store(Request $request)
     {
         //
+        $buku = new Buku();
+        $buku->judul = $request->judul;
+        $buku->penulis = $request->penulis;
+        $buku->harga = $request->harga;
+
+        $buku->tgl_terbit = date('Y-m-d', strtotime($request->tgl_terbit));
+        $buku->save();
+        return redirect('/buku');
     }
 
     /**
@@ -62,14 +71,32 @@ class BukuController extends Controller
     public function edit(string $id)
     {
         //
+        $buku = Buku::find($id);
+        return view('edit',compact( 'buku'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         //
+        $id = $request->id;
+
+        $judul = $request->judul;
+        $penulis = $request->penulis;
+        $harga = $request->harga;
+        $tgl_terbit = date('Y-m-d', strtotime($request->tgl_terbit));
+
+
+        Buku::where('id', $id)->update([
+            'judul' => $judul,
+            'penulis' => $penulis,
+            'harga' => $harga,
+            'tgl_terbit' => $tgl_terbit,
+        ]);
+
+        return redirect('/buku');
     }
 
     /**
@@ -78,5 +105,9 @@ class BukuController extends Controller
     public function destroy(string $id)
     {
         //
+        $buku = Buku::find($id);
+        $buku->delete();
+
+        return redirect('/buku');
     }
 }
