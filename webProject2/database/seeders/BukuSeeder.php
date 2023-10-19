@@ -17,8 +17,6 @@ class BukuSeeder extends Seeder
         $faker = Faker::create();
 
         foreach (range(1, 10) as $index) {
-
-
             Buku::create([
                 'judul' => $faker->sentence(6, true),
                 'penulis' => $faker->name,

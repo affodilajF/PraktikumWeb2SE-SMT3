@@ -95,7 +95,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-
     @extends('layout.master')
     @section('content')
 
@@ -107,7 +106,7 @@
                 </form>
         </div>
 
-        <div class="text-left">
+        <div class="text-right">
             <a href="{{ route('buku.create') }}" class="btn btn-primary">TAMBAH BUKU</a>
         </div>
         <table class="table table-striped">
@@ -128,7 +127,10 @@
                         <td>{{ $buku->judul }}</td>
                         <td>{{ $buku->penulis }}</td>
                         <td>Rp {{ number_format($buku->harga, 0, ',', '.') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d/m/Y') }}</td>
+                        {{-- <td>{{ ($buku->tgl_terbit)->format('d/m/Y') }}</td> --}}
+                        {{-- <td>{{ $buku->tgl_terbit->format('d/m/Y') }}</td> --}}
+
+                        <td>{{ $buku->tgl_terbit}}</td>
                         <td>
                             <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
                                 @csrf
@@ -145,35 +147,26 @@
             <tfoot>
                 <tr>
                     <th> TOTAL </th>
-                    <th>{{ $jumlah_buku }}</th>
+                    <th>{{ $jumlah_data }}</th>
                     <th colspan="1"></th>
                     <th>Rp {{ number_format($total_harga, 0, ',', '.') }}</th>
                 </tr>
             </tfoot>
         </table>
-
         <div class="d-flex justify-content-center">
             {{ $data_buku->links() }}
         </div>
         <div class="text-center"><strong>Jumlah Buku: {{ $jumlah_buku }}</strong></div>
-
-
     </div>
 
+{{--
     @if(Session::has('pesan'))
-        <div class="alert alert-success">{{ Session::get('pesan') }}</div>
-    @endif
+    <div class="alert alert-success">{{ Session::get('pesan') }}</div>
+    @endif --}}
 
-    @isset($cari)
-    @if(count($data_buku))
-    <div class="alert alert-success">Ditemukan <strong>{{count($data_buku)}}</strong> data dengan kata: <strong>{{ $cari }}</strong></div>
-    @else
-    <div class="alert alert-warning"><h4>Data {{ $cari }} tidak ditemukan</h4> <a href="/buku" class="btn btn-warning">Kembali</a></div>
-    @endif
-    @endisset
 
-    @endsection
 
+@endsection
 
 </body>
 </html>

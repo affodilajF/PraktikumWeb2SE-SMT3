@@ -8,11 +8,17 @@
     <!-- Tambahkan link stylesheet Bootstrap di sini -->
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.js') }}"></script>
+
 </head>
 
 
 
 <body>
+
+    @extends('layout.master')
+    @section('content')
 
 <div class="container mt-5">
     <h4 class="mb-4">Tambah Buku</h4>
@@ -32,7 +38,7 @@
         </div>
         <div class="mb-3">
             <label for="tgl_terbit" class="form-label">Tgl. Terbit</label>
-            <input type="text" class="form-control" id="tgl_terbit" name="tgl_terbit" required>
+            <input type="date" class="form-control" id="tgl_terbit" name="tgl_terbit" required class="date from-control" placeholder="yyyy/mm/dd">
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary">Simpan</button>
@@ -40,6 +46,16 @@
         </div>
     </form>
 </div>
+
+@if (count($errors) > 0)
+    <ul class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+@endif
+
+@endsection
 
 
 </body>
