@@ -8,3 +8,5 @@ webProject2 -> Pertemuan 5, commit : "PERTEMUAN 5 ELOQUENT MODEL : TUGAS TABEL B
 (laprak dikumpul tanggal 13 sept tapi baru push github 15 sept, hehe kelupaan ^^)
 
 webProject2 -> Pertemuan 6, CRUD, commit :"PERTEMUAN 6 : CRUD BUKU"
+
+webProject2 -> Pertemuan 8, CRUD, commit :"PERTEMUAN 8 : PELENGKAP CRUD"
