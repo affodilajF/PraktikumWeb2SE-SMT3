@@ -99,6 +99,7 @@
     @extends('layout.master')
     @section('content')
 
+    <x-app-layout>
     <div class="container">
         <h1 class="text-center">Daftar Buku</h1>
         <div>
@@ -159,6 +160,7 @@
 
 
     </div>
+</x-app-layout>
 
     @if(Session::has('pesan'))
         <div class="alert alert-success">{{ Session::get('pesan') }}</div>
@@ -173,6 +175,7 @@
     @endisset
 
     @endsection
+
 
 
 </body>
