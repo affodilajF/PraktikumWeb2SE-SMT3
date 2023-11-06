@@ -116,9 +116,14 @@
                 </form>
         </div>
 
-        <div class="text-left">
-            <a href="{{ route('buku.create') }}" class="btn btn-primary">TAMBAH BUKU</a>
-        </div>
+
+        @if (Auth::check() && Auth::user()->level == 'admin')
+            <div class="text-left">
+                <a href="{{ route('buku.create') }}" class="btn btn-primary">TAMBAH BUKU</a>
+            </div>
+        @endif
+
+
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -127,7 +132,11 @@
                     <th> Penulis </th>
                     <th> Harga </th>
                     <th> Tgl. Terbit </th>
-                    <th> Aksi </th>
+
+                    @if (Auth::check() && Auth::user()->level == 'admin')
+                        <th> Aksi </th>
+                     @endif
+
                 </tr>
             </thead>
 
@@ -140,6 +149,8 @@
                         <td>{{ $buku->penulis }}</td>
                         <td>Rp {{ number_format($buku->harga, 0, ',', '.') }}</td>
                         <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d/m/Y') }}</td>
+
+                        @if (Auth::check() && Auth::user()->level == 'admin')
                         <td class="row justify-content-center align-items-center">
                             <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
                                 @csrf
@@ -150,9 +161,12 @@
                             <form  action="{{ route('buku.edit', $buku->id) }}" method="post">
                                 @csrf
                                     <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
-
                             </form>
                         </td>
+                         @endif
+
+
+                         
                     </tr>
                 @endforeach
             </tbody>
@@ -169,7 +183,7 @@
             </tfoot>
         </table>
 
-        <div class="d-flex justify-content-center">
+        <div >
             {{ $data_buku->links() }}
         </div>
         <div class="text-center"><strong>Jumlah Buku: {{ $jumlah_buku }}</strong></div>

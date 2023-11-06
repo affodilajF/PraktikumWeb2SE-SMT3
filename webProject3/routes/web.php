@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,13 +37,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
     Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
+
+
+});
+
+
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create');
     Route::post('/buku/create', [BukuController::class, 'store'])->name('buku.store');
     Route::post('/buku/delete/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
     Route::post('/buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
     Route::post('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
-
-
 });
 
 require __DIR__.'/auth.php';

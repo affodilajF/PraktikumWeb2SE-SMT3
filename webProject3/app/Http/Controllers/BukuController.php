@@ -18,7 +18,7 @@ class BukuController extends Controller
     {
         $batas = 4;
         $jumlah_buku = Buku::count();
-        $data_buku = Buku::orderBy('id', 'desc')->simplePaginate($batas);
+        $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
 
 
         $no = $batas * ($data_buku->currentPage()-1);
