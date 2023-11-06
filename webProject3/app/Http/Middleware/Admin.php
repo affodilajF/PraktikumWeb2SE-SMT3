@@ -17,8 +17,6 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
 
-        // hanya bisa diakses admin 0 dan 1 (ADMIN OJK DAN BANK)
-
         if (Auth::user()->level == 'admin') {
             return $next($request);
 
@@ -27,3 +25,4 @@ class Admin
         }
     }
 }
+
