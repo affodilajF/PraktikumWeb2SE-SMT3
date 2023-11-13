@@ -17,12 +17,12 @@
 
 <body>
 
-    @extends('layouts.master')
+    @extends('dashboard')
     @section('content')
 
 <div class="container mt-5">
     <h4 class="mb-4">Tambah Buku</h4>
-    <form method="post" action="{{ route('buku.store') }}">
+    <form method="post" action="{{ route('buku.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="judul" class="form-label">Judul</label>
@@ -40,10 +40,36 @@
             <label for="tgl_terbit" class="form-label">Tgl. Terbit</label>
             <input type="date" class="form-control" id="tgl_terbit" name="tgl_terbit" required class="date from-control" placeholder="yyyy/mm/dd">
         </div>
+
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="/buku" class="btn btn-secondary">Batal</a>
+            <label for="thumbnail" class="block text-sm font-medium leading-6 text-gray-900">Thumbnail</label>
+            <div class="mt-2">
+                <input type="file" name="thumbnail" id="thumbnail" >
+            </div>
         </div>
+
+        <div class="col-span-full mt-6">
+            <label for="gallery" class="block text-sm font-medium leading-6 text-gray-900">Gallery</label>
+            <div class="mt-2" id="fileinput_wrapper">
+
+
+            </div>
+            <a href="javascript:void(0);" id="tambah" onclick="addFileInput()" class="btn btn-primary">Tambah</a>
+
+            <script type="text/javascript">
+                function addFileInput () {
+                    var div = document.getElementById('fileinput_wrapper');
+                    div.innerHTML += '<input type="file" name="gallery[]" id="gallery" class="block w-full mb-5" style="margin-bottom:5px;">';
+                };
+            </script>
+        </div>
+
+        
+        <div class="mb-3 d-flex justify-content-end">
+            <button type="submit"class="btn btn-dark text-dark">Simpan</button>
+            <a href="/buku" class="btn btn-secondary ml-2">Batal</a>
+        </div>
+
     </form>
 </div>
 

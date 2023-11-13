@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use Carbon\Carbon;
-
+use Intervention\Image\Facades\Image;
+use App\Models\Gallery;
 
 class BukuController extends Controller
 {
@@ -70,26 +71,48 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
-
         $this->validate($request, [
             'judul' => 'required|string',
             'penulis' => 'required|string|max:30',
             'harga' => 'required|numeric',
-            'tgl_terbit' => 'required|date'
+            'tgl_terbit' => 'required|date',
         ]);
-
 
         $buku = new Buku();
         $buku->judul = $request->judul;
         $buku->penulis = $request->penulis;
         $buku->harga = $request->harga;
-
         $buku->tgl_terbit = date('Y-m-d', strtotime($request->tgl_terbit));
+
+        if ($request->file('thumbnail')) {
+            $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+            $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+
+            Image::make(storage_path().'/app/public/uploads/'.$fileName)
+            ->fit(240,320)
+            ->save();
+
+            $buku-> filename = $fileName;
+            $buku-> filepath = '/storage/' . $filePath;
+        }
+
         $buku->save();
 
-        return redirect('/buku')->with('pesan', 'Data Buku Berhasil di Simpan');
+        if ($request->file('gallery')) {
+            foreach($request->file('gallery') as $key => $file) {
+                $fileName = time().'_'.$file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
 
+                $gallery = Gallery::create([
+                    'nama_galeri'   => $fileName,
+                    'path'          => '/storage/' . $filePath,
+                    'foto'          => $fileName,
+                    'buku_id'       => $buku-> id
+                ]);
+
+            }
+        }
+        return redirect('/buku')->with('pesan', 'Data Buku Berhasil di Simpan');
     }
 
     /**
@@ -117,12 +140,10 @@ class BukuController extends Controller
     {
         //
         $id = $request->id;
-
         $judul = $request->judul;
         $penulis = $request->penulis;
         $harga = $request->harga;
         $tgl_terbit = date('Y-m-d', strtotime($request->tgl_terbit));
-
 
         Buku::where('id', $id)->update([
             'judul' => $judul,
@@ -130,6 +151,46 @@ class BukuController extends Controller
             'harga' => $harga,
             'tgl_terbit' => $tgl_terbit,
         ]);
+
+
+        // KALO GALLERY
+        if ($request->file('gallery')) {
+            foreach($request->file('gallery') as $key => $file) {
+                $fileName = time().'_'.$file->getClientOriginalName();
+                $filePath = $file->storeAs('uploads', $fileName, 'public');
+
+                $gallery = Gallery::create([
+                    'nama_galeri'   => $fileName,
+                    'path'          => '/storage/' . $filePath,
+                    'foto'          => $fileName,
+                    'buku_id'       => $id
+                ]);
+
+            }
+        }
+
+
+        // KALO THUMBNAIL
+        if ($request->file('thumbnail')) {
+            $fileName = time().'_'.$request->thumbnail->getClientOriginalName();
+            $filePath = $request->file('thumbnail')->storeAs('uploads', $fileName, 'public');
+
+            Image::make(storage_path().'/app/public/uploads/'.$fileName)
+            ->fit(240,320)
+            ->save();
+
+            Buku::where('id', $id)->update([
+                'judul' => $judul,
+                'penulis' => $penulis,
+                'harga' => $harga,
+                'tgl_terbit' => $tgl_terbit,
+
+                'filename' => $fileName,
+                'filepath'  => '/storage/' . $filePath
+
+            ]);
+
+        }
 
         return redirect('/buku')->with('pesan', 'Data Buku Berhasil di Update');
     }
@@ -139,7 +200,6 @@ class BukuController extends Controller
      */
     public function destroy(string $id)
     {
-        //
         $buku = Buku::find($id);
         $buku->delete();
 

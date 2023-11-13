@@ -94,7 +94,10 @@
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"> --}}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -128,6 +131,7 @@
             <thead>
                 <tr>
                     <th> No. </th>
+                    <th> Buku </th>
                     <th> Judul Buku </th>
                     <th> Penulis </th>
                     <th> Harga </th>
@@ -145,13 +149,26 @@
                 @foreach ($data_buku as $buku)
                     <tr>
                         <td>{{ $no++ }}</td>
+                        <td>
+                            @if ($buku->filepath)
+                            <div class="relative h-10 w-10">
+                                <img
+                                class="h-full w-full rounded-full object-cover object-center"
+                                src="{{ asset($buku->filepath) }}"
+                                alt = ""
+                                />
+
+                            </div>
+                            @endif
+                        </td>
+
                         <td>{{ $buku->judul }}</td>
                         <td>{{ $buku->penulis }}</td>
                         <td>Rp {{ number_format($buku->harga, 0, ',', '.') }}</td>
                         <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d/m/Y') }}</td>
 
                         @if (Auth::check() && Auth::user()->level == 'admin')
-                        <td class="row justify-content-center align-items-center">
+                        <td style="display: flex; justify-content: center;">
                             <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
                                 @csrf
                                 <button onclick="return confirm('Apakah yakin ingin menghapus data?')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
@@ -166,7 +183,7 @@
                          @endif
 
 
-                         
+
                     </tr>
                 @endforeach
             </tbody>

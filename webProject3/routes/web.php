@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\GalleryController;
 
 
 
@@ -48,6 +49,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/buku/delete/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
     Route::post('/buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
     Route::post('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
+
+
+    Route::delete('/gallery/delete/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+
+
+
+
 });
 
 require __DIR__.'/auth.php';
