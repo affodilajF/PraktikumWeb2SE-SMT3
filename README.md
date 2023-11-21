@@ -17,4 +17,4 @@ webProject3 -> Pertemuan 10, MIDDLEWARE
 
 webProject3 -> Pertemuan 11, UNGGAH FILE
 
-webProject3 -> Pertemuan 11, SEO
+webProject3 -> Pertemuan 12, SEO
