@@ -36,25 +36,22 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
-    Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
 
-
+    // Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
 });
+
+Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
+Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
+Route::get('/detail-buku/{title}',  [BukuController::class, 'galbuku'])->name('galeri.buku');
 
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/buku/create', [BukuController::class, 'create'])->name('buku.create');
     Route::post('/buku/create', [BukuController::class, 'store'])->name('buku.store');
-    Route::post('/buku/delete/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
-    Route::post('/buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
+    Route::delete('/buku/delete/{id}', [BukuController::class, 'destroy'])->name('buku.destroy');
+    Route::get('/buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
     Route::post('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
-
-
-    Route::delete('/gallery/delete/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
-
-
-
+    Route::get('/gallery/delete/{id}', [GalleryController::class, 'delGallery'])->name('gallery.delete');
 
 });
 

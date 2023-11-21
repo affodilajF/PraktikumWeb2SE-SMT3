@@ -17,6 +17,16 @@
                     {{ __('Dashboard') }}
                 </h2>
                 @break
+            @case('buku.edit')
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Edit Buku') }}
+                </h2>
+            @break
+            @case('buku.create')
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Tambah Buku') }}
+                </h2>
+            @break
         @endswitch
     </x-slot>
 
@@ -34,6 +44,6 @@
             </div>
         </div>
     </div>
-    
+
 </x-app-layout>
 

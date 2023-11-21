@@ -15,6 +15,16 @@ class BukuController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function galbuku($title){
+        $bukus = Buku::where('judul', $title)->first();
+        $galeris = $bukus->galleries()->orderBy('id', 'desc')->paginate(7);
+        return view('galeri-buku', compact('bukus', 'galeris'));
+
+        // return view('galeri-buku',compact( 'bukus'));
+    }
+
+
     public function index()
     {
         $batas = 4;
@@ -22,7 +32,8 @@ class BukuController extends Controller
         $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
 
 
-        $no = $batas * ($data_buku->currentPage()-1);
+        $no =($batas * ($data_buku->currentPage()-1))+1;
+
 
         // menghitung total harga
         $total_harga = 0;

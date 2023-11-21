@@ -65,5 +65,21 @@ class GalleryController extends Controller
         $gal->delete();
 
         return redirect('/buku')->with('pesan', 'Gallery Berhasil di Hapus');
+
+        // $gallery = Gallery::findOrFail($id);
+
+        // $gallery->delete();
+
+        // return redirect()->back();
+    }
+
+
+    public function delGallery($id) {
+        // dd($id);
+        $gallery = Gallery::findOrFail($id);
+        $gallery->delete();
+
+        return redirect()->back();
+        // return redirect('/buku')->with('pesan', 'Gallery Berhasil di Hapus');
     }
 }

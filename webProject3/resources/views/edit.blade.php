@@ -20,7 +20,7 @@
     @section('content')
 
     <div class="container mt-5">
-    <h4 class="mb-4">UPDATE BUKU</h4>
+
     <form method="post" action="{{ route('buku.update', $buku->id) }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
@@ -62,7 +62,28 @@
                 };
             </script>
         </div>
+        <br>
 
+        {{-- <div class="gallery_items">
+            @foreach($buku->galleries()->get() as $gallery)
+                <div class="gallery_item">
+                    <img
+                        class="object-cover object-center"
+                        src="{{ asset($gallery->path) }}"
+                        alt=""
+                        width="400"
+                        style="margin: 10px;"
+                    />
+
+                    <label>
+                        Hapus gambar?
+                        <input type="checkbox" class="gallery-checkbox" data-gallery-id="{{ $gallery->id }}" style="margin: 10px;">
+                    </label>
+                </div>
+            @endforeach
+        </div> --}}
+
+        {{-- <div class="container-fluid">
         <div class="gallery_items">
             @foreach($buku->galleries()->get() as $gallery)
                 <div class="gallery_item">
@@ -81,8 +102,27 @@
                 </div>
             @endforeach
         </div>
+        </div> --}}
 
 
+        <div class="container-fluid">
+            <div class="row align-items-start mr-3">
+                @foreach($buku->galleries()->get() as $gallery)
+                    <div class="col-3 mb-3">
+                        <div class="position-relative">
+
+                            <img src="{{ asset($gallery->path) }}" alt="" width="400"/>
+
+                            <a href="{{ route('gallery.delete', $gallery->id) }}" class="btn btn-secondary" style="position: absolute; top: 10px; right: 10px;">
+                                <i class="fas fa-trash-alt"></i>
+                                Hapus
+                            </a>
+
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
 
         <div class="mb-3 d-flex justify-content-end">
             <button type="submit" class="btn btn-dark text-dark">UPDATE</button>
@@ -95,32 +135,6 @@
 @endsection
 
 
-
-<script type="text/javascript">
-    document.addEventListener('click', function(event) {
-        if (event.target && event.target.classList.contains('gallery-checkbox')) {
-            if (event.target.checked) {
-                const galleryId = event.target.getAttribute('data-gallery-id');
-                fetch(`/gallery/delete/${galleryId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        event.target.parentNode.remove();
-                    } else {
-                        console.error('Gagal menghapus gambar');
-                    }
-                })
-                .catch(error => {
-                    console.error('Terjadi kesalahan:', error);
-                });
-            }
-        }
-    });
-</script>
 
 
 

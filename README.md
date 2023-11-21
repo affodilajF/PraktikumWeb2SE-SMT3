@@ -16,3 +16,5 @@ webProject3 -> Pertemuan 9, AUTH
 webProject3 -> Pertemuan 10, MIDDLEWARE
 
 webProject3 -> Pertemuan 11, UNGGAH FILE
+
+webProject3 -> Pertemuan 11, SEO

@@ -21,7 +21,6 @@
     @section('content')
 
 <div class="container mt-5">
-    <h4 class="mb-4">Tambah Buku</h4>
     <form method="post" action="{{ route('buku.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
@@ -64,7 +63,7 @@
             </script>
         </div>
 
-        
+
         <div class="mb-3 d-flex justify-content-end">
             <button type="submit"class="btn btn-dark text-dark">Simpan</button>
             <a href="/buku" class="btn btn-secondary ml-2">Batal</a>

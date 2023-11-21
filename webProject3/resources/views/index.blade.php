@@ -153,11 +153,10 @@
                             @if ($buku->filepath)
                             <div class="relative h-10 w-10">
                                 <img
-                                class="h-full w-full rounded-full object-cover object-center"
+                                class="h-full w-full  object-cover object-center"
                                 src="{{ asset($buku->filepath) }}"
                                 alt = ""
                                 />
-
                             </div>
                             @endif
                         </td>
@@ -168,22 +167,29 @@
                         <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d/m/Y') }}</td>
 
                         @if (Auth::check() && Auth::user()->level == 'admin')
-                        <td style="display: flex; justify-content: center;">
+                        <td>
                             <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
                                 @csrf
+                                @method('DELETE')
                                 <button onclick="return confirm('Apakah yakin ingin menghapus data?')" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
-
                             </form>
-                            <a> &nbsp <a>
-                            <form  action="{{ route('buku.edit', $buku->id) }}" method="post">
+                        </td>
+
+
+                        <td>
+                            <form  action="{{ route('buku.edit', $buku->id) }}" method="get">
                                 @csrf
                                     <button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button>
                             </form>
-                        </td>
+                         </td>
                          @endif
 
-
-
+                         <td>
+                            <form action="{{ route('galeri.buku', $buku->judul) }}" method="get">
+                                @csrf
+                                <button class="btn btn-sm btn-warning"><i class="fas fa-eye fa-inverse"></i> </button>
+                            </form>
+                         </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -200,6 +206,8 @@
             </tfoot>
         </table>
 
+        
+        {{-- links itu buat pagination --}}
         <div >
             {{ $data_buku->links() }}
         </div>
