@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Buku;
+
 
 class User extends Authenticatable
 {
@@ -43,4 +45,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function favoriteBooks()
+    {
+        return $this->belongsToMany(Buku::class, 'user_favorite_books', 'user_id', 'book_id')->withTimestamps();
+    }
+
+
+
 }

@@ -105,28 +105,19 @@
 
 </head>
 <body>
-
     @extends('dashboard')
     @section('content')
-
-
     <div class="container">
-
-
         <div>
             <form action="{{ route('buku.search') }}" method="get">@csrf
                 <input type="text" name="kata" class="form-control" placeholder="Cari ..." style="width: 30%; display: inline; margin-top: 10px; margin-bottom: 10px; float: right;">
                 </form>
         </div>
-
-
         @if (Auth::check() && Auth::user()->level == 'admin')
             <div class="text-left">
                 <a href="{{ route('buku.create') }}" class="btn btn-primary">TAMBAH BUKU</a>
             </div>
         @endif
-
-
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -134,9 +125,7 @@
                     <th> Buku </th>
                     <th> Judul Buku </th>
                     <th> Penulis </th>
-                    <th> Harga </th>
-                    <th> Tgl. Terbit </th>
-                    <th> Rating </th>
+
 
                     @if (Auth::check() && Auth::user()->level == 'admin')
                         <th> Aksi </th>
@@ -144,8 +133,6 @@
 
                 </tr>
             </thead>
-
-
             <tbody>
                 @foreach ($data_buku as $buku)
                     <tr>
@@ -164,9 +151,6 @@
 
                         <td>{{ $buku->judul }}</td>
                         <td>{{ $buku->penulis }}</td>
-                        <td>Rp {{ number_format($buku->harga, 0, ',', '.') }}</td>
-                        <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d/m/Y') }}</td>
-                        <td> 5 </td>
 
                         @if (Auth::check() && Auth::user()->level == 'admin')
                         <td>
@@ -187,11 +171,6 @@
                          @endif
 
                          <td>
-                            {{-- <form action="{{ route('galeri.buku', ['judul' => $buku->judul, 'id' => $buku->id]) }}" method="get">
-                                @csrf
-                                <button class="btn btn-sm btn-warning"><i class="fas fa-eye fa-inverse"></i></button>
-                            </form> --}}
-
                             <form action="{{ route('galeri.buku', $buku->judul) }}" method="get">
                                 @csrf
                                 <button class="btn btn-sm btn-warning"><i class="fas fa-eye fa-inverse"></i> </button>
@@ -201,20 +180,7 @@
                     </tr>
                 @endforeach
             </tbody>
-
-
-
-            <tfoot>
-                <tr>
-                    <th> TOTAL </th>
-                    <th>{{ $jumlah_buku }}</th>
-                    <th colspan="1"></th>
-                    <th>Rp {{ number_format($total_harga, 0, ',', '.') }}</th>
-                </tr>
-            </tfoot>
         </table>
-
-
         {{-- links itu buat pagination --}}
         <div >
             {{ $data_buku->links() }}

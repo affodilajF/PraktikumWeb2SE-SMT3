@@ -20,5 +20,10 @@ class Buku extends Model
         return $this->hasMany(Gallery::class);
     }
 
+    public function userFavBooks()
+{
+    return $this->hasMany(UserFavBooks::class, 'book_id', 'id');
+}
+
 }
 

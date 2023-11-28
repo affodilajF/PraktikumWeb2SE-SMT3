@@ -8,6 +8,14 @@ use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use App\Models\Gallery;
 
+use App\Models\UserFavBooks;
+
+use App\Models\User;
+
+
+
+use Illuminate\Support\Facades\Auth; // Import the Auth facade
+
 class BukuController extends Controller
 {
 
@@ -19,9 +27,45 @@ class BukuController extends Controller
     public function galbuku($title){
         $bukus = Buku::where('judul', $title)->first();
         $galeris = $bukus->galleries()->orderBy('id', 'desc')->paginate(7);
-        return view('galeri-buku', compact('bukus', 'galeris'));
 
-        // return view('galeri-buku',compact( 'bukus'));
+        $isFav = false;
+        $user = Auth::user();
+
+
+
+        if ($user) {
+            $userFavorite = UserFavBooks::where('user_id', $user->id)
+                ->where('book_id', $bukus->id)
+                ->exists();
+
+            if ($userFavorite) {
+                $isFav = true;
+            }
+        }
+
+
+
+        return view('galeri-buku', compact('bukus', 'galeris', 'isFav'));
+    }
+
+    public function addbook(Buku $buku)
+    {
+        $user = Auth::user();
+
+        // $bookId = $request->id;
+
+        if ($user) {
+            $userFavBook = new UserFavBooks();
+            $userFavBook->user_id = $user->id;
+            $userFavBook->book_id = $buku->id;
+            $userFavBook->save();
+
+
+            return redirect()->back()->with('success', 'Book added to favorites!');
+        }
+
+        return redirect()->route('login')->with('error', 'Please login to add to favorites.');
+
     }
 
 
@@ -47,6 +91,30 @@ class BukuController extends Controller
         return view('index', compact('data_buku', 'total_harga', 'no', 'jumlah_buku'));
 
     }
+
+    public function indexFavBooks()
+    {
+        $batas = 4;
+        $user = Auth::user();
+        $usery = User::find($user->id);
+
+        if ($user) {
+            $jumlah_buku = $usery->favoriteBooks()->count();
+            $data_buku = Buku::whereHas('userFavBooks', function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            })->orderBy('id', 'desc')->paginate($batas);
+
+            $no = ($batas * ($data_buku->currentPage() - 1)) + 1;
+            return view('indexfav', compact('data_buku', 'no', 'jumlah_buku'));
+        }
+
+        return redirect()->route('login')->with('error', 'Please login to view favorite books.');
+    }
+
+
+
+
+
 
     public function search(Request $request)
     {

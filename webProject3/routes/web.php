@@ -32,16 +32,21 @@ Route::get('/dashboard', function () {
 //     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+
+    Route::post('/add-book/{buku}', [BukuController::class, 'addbook'])->name('addfav.book');
+    Route::get('/favbooks', [BukuController::class, 'indexFavBooks'])->name('favbooks');;
+    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    // Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
 });
 
 Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
 Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
+
+
 Route::get('/detail-buku/{title}',  [BukuController::class, 'galbuku'])->name('galeri.buku');
 
 

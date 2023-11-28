@@ -27,6 +27,11 @@
                     {{ __('Tambah Buku') }}
                 </h2>
             @break
+            @case('favbooks')
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Buku Favorite Ku') }}
+            </h2>
+        @break
         @endswitch
     </x-slot>
 

@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Gallery</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+
+
     <link href="{{ asset('dist/css/lightbox.min.css') }}" rel="stylesheet">
 
 
@@ -15,6 +17,8 @@
 
 
 </head>
+
+
 <body class="bg-gray-100">
 
     <div class="container mx-auto py-10 p-14 ">
@@ -32,15 +36,44 @@
                 <p class="text-lg font-semibold text-gray-700 mb-1">Rp. {{ $bukus->harga }}</p>
                 <p class="text-base text-gray-700 mb-1">{{ $bukus->penulis }}</p>
                 <p class="text-base text-gray-700">{{ $bukus->tgl_terbit }}</p>
+                <p class="text-base text-gray-700">Rating</p>
 
                 <br>
-                <div> <a href=""> Toko Buku Ea </a>  </div>
-            </div>
-{{--
-            <div class="w-1/4 ">
-                <div> <a href=""> Toko Buku Ea </a>  </div>
-            </div> --}}
+                {{-- <div> <a href=""> Toko Buku Ea </a>  </div> --}}
 
+
+                <div>
+
+                     {{-- <input type="hidden" name="book_id" value="{{ $bukus->id }}"> --}}
+
+
+                    {{-- <form action="{{ route('addfav.book', $bukus->id) }}" method="post" class="flex items-center">
+                        @csrf
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Simpan ke Daftar Favorit
+                        </button>
+                    </form> --}}
+
+                @if (Auth::check() && Auth::user()->level == 'user')
+                    @if($isFav)
+                    <button disabled class="bg-green-500 text-white font-bold py-2 px-4 rounded">
+                        Telah Ditambahkan Ke Daftar Favorite
+                    </button>
+                    @else
+                    <form action="{{ route('addfav.book', $bukus->id) }}" method="post" class="flex items-center">
+                        @csrf
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Simpan ke Daftar Favorit
+                        </button>
+                    </form>
+                    @endif
+                @endif
+
+
+
+
+                </div>
+            </div>
         </div>
 
         <!-- Bagian Galeri Foto -->
@@ -56,11 +89,18 @@
                 </div>
             @endforeach
         </div>
+
+
+
         <div class="mt-8">{{ $galeris->links() }}</div>
-
-
-
     </div>
+
+
+
+
+
+
+
 
     <script src="{{ asset('dist/js/lightbox-plus-jquery.min.js') }}"></script>
 
