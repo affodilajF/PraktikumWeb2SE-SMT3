@@ -127,9 +127,9 @@
                     <th> Penulis </th>
 
 
-                    @if (Auth::check() && Auth::user()->level == 'admin')
+                    {{-- @if (Auth::check() && Auth::user()->level == 'admin') --}}
                         <th> Aksi </th>
-                     @endif
+                     {{-- @endif --}}
 
                 </tr>
             </thead>

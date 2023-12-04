@@ -1,89 +1,3 @@
-{{-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
-
-</head>
-<body>
-
-    <h1 style="text-align:center"> BUKU </h1>
-
-    <div>
-        <p align='right'>
-            <a href="{{ route('buku.create') }}" class="btn btn-primary">TAMBAH BUKU</a>
-          </p>
-
-    </div>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th> No. </th>
-                <th> Judul Buku </th>
-                <th> Penulis </th>
-                <th> Harga </th>
-                <th> Tgl. Terbit </th>
-                <th> Aksi </th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach ($data_buku as $buku )
-                <tr>
-                    <td>{{ $no++ }}</td>
-                    <td>{{ $buku->judul }}</td>
-                    <td>{{ $buku->penulis }}</td>
-                    <td>{{ number_format($buku->harga,0,',', '.')}}</td>
-                    <td>{{ $buku->tgl_terbit }}</td>
-                    <td>
-
-                        <form action="{{ route('buku.destroy', $buku->id) }}" method="post">
-                            @csrf
-                            <button class="btn btn-danger" onClick="return confirm('Mau hapus yakin?')">Hapus </button>
-                        </form>
-
-                        <form  action="{{ route('buku.edit', $buku->id) }}" method="post">
-                            @csrf
-                            <button class="btn btn-warning"> Edit </button>
-                        </form>
-
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-
-        <tfoot>
-            <tr>
-                <th> TOTAL </th>
-                <th>{{ $jumlah_data }}</th>
-                <th colspan="1"></th>
-                <th>{{ $total_harga }}</th>
-            </tr>
-        </tfoot>
-    </table>
-
-
-
-
-
-
-    <div> {{ $data_buku->links() }}</div>
-    <div><strong> Jumlah Buku : {{ $jumlah_buku }}</strong></div>
-
-
-
-
-
-</body>
-</html> --}}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,18 +50,15 @@
                     <th> Penulis </th>
                     <th> Harga </th>
                     <th> Tgl. Terbit </th>
-                    <th> Rating </th>
-
-                    @if (Auth::check() && Auth::user()->level == 'admin')
-                        <th> Aksi </th>
-                     @endif
-
+                    <th> Aksi </th>
                 </tr>
             </thead>
 
 
             <tbody>
+
                 @foreach ($data_buku as $buku)
+
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>
@@ -166,7 +77,7 @@
                         <td>{{ $buku->penulis }}</td>
                         <td>Rp {{ number_format($buku->harga, 0, ',', '.') }}</td>
                         <td>{{ \Carbon\Carbon::parse($buku->tgl_terbit)->format('d/m/Y') }}</td>
-                        <td> 5 </td>
+
 
                         @if (Auth::check() && Auth::user()->level == 'admin')
                         <td>
@@ -187,10 +98,7 @@
                          @endif
 
                          <td>
-                            {{-- <form action="{{ route('galeri.buku', ['judul' => $buku->judul, 'id' => $buku->id]) }}" method="get">
-                                @csrf
-                                <button class="btn btn-sm btn-warning"><i class="fas fa-eye fa-inverse"></i></button>
-                            </form> --}}
+
 
                             <form action="{{ route('galeri.buku', $buku->judul) }}" method="get">
                                 @csrf
@@ -229,11 +137,11 @@
     @endif
 
     @isset($cari)
-    @if(count($data_buku))
-    <div class="alert alert-success">Ditemukan <strong>{{count($data_buku)}}</strong> data dengan kata: <strong>{{ $cari }}</strong></div>
-    @else
-    <div class="alert alert-warning"><h4>Data {{ $cari }} tidak ditemukan</h4> <a href="/buku" class="btn btn-warning">Kembali</a></div>
-    @endif
+        @if(count($data_buku))
+            <div class="alert alert-success">Ditemukan <strong>{{count($data_buku)}}</strong> data dengan kata: <strong>{{ $cari }}</strong></div>
+        @else
+            <div class="alert alert-warning"><h4>Data {{ $cari }} tidak ditemukan</h4> <a href="/buku" class="btn btn-warning">Kembali</a></div>
+        @endif
     @endisset
 
     @endsection

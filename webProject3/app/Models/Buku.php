@@ -20,10 +20,22 @@ class Buku extends Model
         return $this->hasMany(Gallery::class);
     }
 
-    public function userFavBooks()
-{
-    return $this->hasMany(UserFavBooks::class, 'book_id', 'id');
-}
+        public function userFavBooks()
+    {
+        return $this->hasMany(UserFavBooks::class, 'book_id', 'id');
+    }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    // public function averageRating()
+    // {
+    //     return $this->ratings->avg('rating');
+    // }
+
+
 
 }
 

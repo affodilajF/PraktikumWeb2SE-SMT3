@@ -32,10 +32,12 @@ Route::get('/dashboard', function () {
 //     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::post('/buku/rate/{id}', [BukuController::class, 'rate'])->name('buku.rate');
+
 
     Route::post('/add-book/{buku}', [BukuController::class, 'addbook'])->name('addfav.book');
     Route::get('/favbooks', [BukuController::class, 'indexFavBooks'])->name('favbooks');;
-    
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

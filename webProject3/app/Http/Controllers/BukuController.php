@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Buku;
-use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
 use App\Models\Gallery;
 
 use App\Models\UserFavBooks;
 
 use App\Models\User;
+use App\Models\Rating;
 
 
 
@@ -18,6 +18,28 @@ use Illuminate\Support\Facades\Auth; // Import the Auth facade
 
 class BukuController extends Controller
 {
+
+    public function rate(Request $request, $id)
+    {
+
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5', // Adjust the validation rules as needed
+        ]);
+
+
+        $rating = new rating();
+        $rating->user_id = auth()->id();
+        $rating->book_id = $id;
+        $rating->rating = $request->input('rating');
+        $rating->save();
+
+        $buku = Buku::where('id', $id)->first();
+        $judul = $buku->judul;
+
+        return redirect()->route('galeri.buku', $judul)->with('pesan', 'Rating submitted successfully!');
+    }
+
+
 
 
     /**
@@ -31,8 +53,6 @@ class BukuController extends Controller
         $isFav = false;
         $user = Auth::user();
 
-
-
         if ($user) {
             $userFavorite = UserFavBooks::where('user_id', $user->id)
                 ->where('book_id', $bukus->id)
@@ -41,18 +61,21 @@ class BukuController extends Controller
             if ($userFavorite) {
                 $isFav = true;
             }
+
+            // rating
+            $ratings = rating::where('book_id', $bukus->id)->get();
+            $avgrating = $ratings->avg('rating');
+            // dd($avgrating);
         }
 
-
-
-        return view('galeri-buku', compact('bukus', 'galeris', 'isFav'));
+        return view('galeri-buku', compact('bukus', 'galeris', 'isFav', 'avgrating'));
     }
+
+    
 
     public function addbook(Buku $buku)
     {
         $user = Auth::user();
-
-        // $bookId = $request->id;
 
         if ($user) {
             $userFavBook = new UserFavBooks();
@@ -60,12 +83,8 @@ class BukuController extends Controller
             $userFavBook->book_id = $buku->id;
             $userFavBook->save();
 
-
-            return redirect()->back()->with('success', 'Book added to favorites!');
+            return redirect()->back();
         }
-
-        return redirect()->route('login')->with('error', 'Please login to add to favorites.');
-
     }
 
 
@@ -85,8 +104,6 @@ class BukuController extends Controller
             $total_harga = $total_harga +  (int)$buku->harga;
         }
 
-
-
         // me-return hasilnya menggunakan sebuah view
         return view('index', compact('data_buku', 'total_harga', 'no', 'jumlah_buku'));
 
@@ -99,7 +116,10 @@ class BukuController extends Controller
         $usery = User::find($user->id);
 
         if ($user) {
+            // menghitung jumlah buku yang favorite
             $jumlah_buku = $usery->favoriteBooks()->count();
+
+            // mendapatkan data buku yang favorite
             $data_buku = Buku::whereHas('userFavBooks', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })->orderBy('id', 'desc')->paginate($batas);
@@ -107,10 +127,12 @@ class BukuController extends Controller
             $no = ($batas * ($data_buku->currentPage() - 1)) + 1;
             return view('indexfav', compact('data_buku', 'no', 'jumlah_buku'));
         }
-
-        return redirect()->route('login')->with('error', 'Please login to view favorite books.');
     }
 
+
+    // $data_buku = Buku::whereHas('userFavBooks')->orderBy('id', 'desc')->paginate($batas);
+    // kalo tanpa userFavBooks
+    // $data_buku = Buku::orderBy('id', 'desc')->paginate($batas);
 
 
 
