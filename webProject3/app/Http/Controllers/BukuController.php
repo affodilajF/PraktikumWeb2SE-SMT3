@@ -11,6 +11,8 @@ use App\Models\UserFavBooks;
 
 use App\Models\User;
 use App\Models\Rating;
+use App\Models\Kategori;
+use App\Models\KategoriBuku;
 
 
 
@@ -18,6 +20,55 @@ use Illuminate\Support\Facades\Auth; // Import the Auth facade
 
 class BukuController extends Controller
 {
+
+
+    public function tambahKategori($id)
+    {
+        $buku = Buku::findOrFail($id);
+        $kategoris = Kategori::all();
+
+        return view('admin.tambah_kategori', compact('buku', 'kategoris'));
+    }
+
+    public function simpanKategori(Request $request, $id)
+    {
+        $buku = Buku::findOrFail($id);
+        $buku->kategoris()->attach($request->kategori_id);
+
+        // return redirect()->route('detail_buku', $buku->id)->with('success', 'Kategori berhasil ditambahkan pada buku.');
+
+        $buku = Buku::where('id', $id)->first();
+        $judul = $buku->judul;
+
+        return redirect()->route('galeri.buku', $judul)->with('pesan', 'Category submitted successfully!');
+    }
+
+
+
+    public function kategoribuku()
+    {
+        // $kategori = Kategori::findOrFail($id);
+        // $bukus = $kategori->bukus; // Asumsikan bahwa relasi antara Kategori dan Buku sudah didefinisikan
+
+        // return view('kategoribuku', compact('kategori', 'bukus'));
+        return view('kategoribuku');
+
+
+        // return view('index', compact('data_buku', 'total_harga', 'no', 'jumlah_buku'));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function rate(Request $request, $id)
     {
@@ -68,10 +119,14 @@ class BukuController extends Controller
             // dd($avgrating);
         }
 
-        return view('galeri-buku', compact('bukus', 'galeris', 'isFav', 'avgrating'));
+        $kategoriBuku = KategoriBuku::where('buku_id', $bukus->id)->with('kategori')->get();
+
+
+        // return view('galeri-buku', compact('bukus', 'galeris', 'isFav', 'avgrating'));
+        return view('galeri-buku', compact('bukus', 'galeris', 'isFav', 'avgrating', 'kategoriBuku'));
     }
 
-    
+
 
     public function addbook(Buku $buku)
     {
@@ -108,6 +163,35 @@ class BukuController extends Controller
         return view('index', compact('data_buku', 'total_harga', 'no', 'jumlah_buku'));
 
     }
+
+    public function popularbooks(){
+
+
+        $data_buku = Buku::with('ratings')
+        ->withCount('ratings')
+        ->withAvg('ratings', 'rating')
+        ->orderBy('ratings_avg_rating', 'desc')
+        ->get();
+
+        $ratingsBuku = [];
+        foreach ($data_buku as $buku) {
+            $ratingsBuku[$buku->id] = $buku->ratings->avg('rating');
+        }
+
+
+        $batas = 4;
+        // $no = 5;
+
+
+        $jumlah_buku = 6;
+
+
+        return view('popularbooks', compact('data_buku', 'jumlah_buku', 'ratingsBuku'));
+
+
+    }
+
+
 
     public function indexFavBooks()
     {
@@ -307,3 +391,4 @@ class BukuController extends Controller
         return redirect('/buku')->with('pesan', 'Data Buku Berhasil di Hapus');
     }
 }
+

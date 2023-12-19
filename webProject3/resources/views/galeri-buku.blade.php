@@ -102,6 +102,35 @@
                 </div>
 
 
+                <div>
+                    @foreach ($kategoriBuku as $kb)
+                        <p>{{ $kb->kategori->nama_kategori }}</p>
+                    @endforeach
+
+                </div>
+
+
+
+
+
+
+                <div>
+                    @if (Auth::check() && Auth::user()->level == 'admin')
+                        <form action="{{ route('simpan_kategori', $bukus->id) }}" method="post">
+                            @csrf
+                            <label for="kategori_id" class="mr-2 font-semibold text-gray-700">Tambah Kategori:</label>
+                            <select name="kategori_id" id="kategori_id" class="p-2 border rounded-md">
+                                <option value="">Pilih Kategori</option>
+                                @foreach(\App\Models\Kategori::all() as $kategori)
+                                    <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md">Tambah</button>
+                        </form>
+                    @endif
+                </div>
+
+
 
                 @if(Session::has('pesan'))
                 <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 py-2 px-3 mb-2" role="alert">

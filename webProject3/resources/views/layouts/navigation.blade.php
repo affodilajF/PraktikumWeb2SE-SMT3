@@ -27,6 +27,26 @@
                         {{ __('My Fav Books') }}
                     </x-nav-link>
                 </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('popularbooks')" :active="request()->routeIs('popularbooks')">
+                        {{ __('Popular books') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('kategoribuku')" :active="request()->routeIs('kategoribuku')">
+                        {{ __('Books by Category') }}
+                    </x-nav-link>
+                </div>
+
+
+
+
+
+
+
+
             </div>
 
 

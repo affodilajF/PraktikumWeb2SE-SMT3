@@ -25,15 +25,53 @@ class Buku extends Model
         return $this->hasMany(UserFavBooks::class, 'book_id', 'id');
     }
 
-    public function ratings()
-    {
-        return $this->hasMany(Rating::class);
-    }
+    // public function ratings()
+    // {
+    //     return $this->hasMany(Rating::class);
+    // }
 
     // public function averageRating()
     // {
     //     return $this->ratings->avg('rating');
     // }
+
+
+    // public function rating()
+    // {
+    //     return $this->hasMany(Rating::class);
+    // }
+
+
+
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class, 'book_id', 'id');
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public function kategoris()
+    {
+        return $this->belongsToMany(Kategori::class, 'kategoribuku', 'buku_id', 'kategori_id');
+    }
+
+
+
+
+
+
+
+
+
 
 
 

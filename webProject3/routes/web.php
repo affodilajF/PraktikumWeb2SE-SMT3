@@ -36,7 +36,10 @@ Route::middleware('auth')->group(function () {
 
 
     Route::post('/add-book/{buku}', [BukuController::class, 'addbook'])->name('addfav.book');
-    Route::get('/favbooks', [BukuController::class, 'indexFavBooks'])->name('favbooks');;
+    Route::get('/favbooks', [BukuController::class, 'indexFavBooks'])->name('favbooks');
+    Route::get('/popularbooks', [BukuController::class, 'popularbooks'])->name('popularbooks');
+    Route::get('/kategoribuku', [BukuController::class, 'kategoribuku'])->name('kategoribuku');
+
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -45,7 +48,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('/buku', [BukuController::class, 'index'])->name('buku');;
+Route::get('/buku', [BukuController::class, 'index'])->name('buku');
 Route::get('/buku/search', [BukuController::class, 'search'])->name('buku.search');
 
 
@@ -59,6 +62,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/buku/edit/{id}', [BukuController::class, 'edit'])->name('buku.edit');
     Route::post('/buku/{id}', [BukuController::class, 'update'])->name('buku.update');
     Route::get('/gallery/delete/{id}', [GalleryController::class, 'delGallery'])->name('gallery.delete');
+
+
+    Route::get('/admin/buku/{id}/tambah-kategori', [BukuController::class, 'tambahKategori'])->name('tambah_kategori');
+    Route::post('/admin/buku/{id}/simpan-kategori', [BukuController::class, 'simpanKategori'])->name('simpan_kategori');
+
+
+
 
 });
 
