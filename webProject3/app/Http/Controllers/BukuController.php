@@ -127,6 +127,25 @@ class BukuController extends Controller
     }
 
 
+    public function hapusKategori(Request $request)
+{
+    // Periksa apakah pengguna memiliki izin untuk menghapus kategori (admin, dst.)
+    if (Auth::check() && Auth::user()->level == 'admin') {
+        $kategoriId = $request->input('kategori_id');
+
+        // Lakukan pengecekan atau validasi lebih lanjut di sini sesuai kebutuhan aplikasi Anda
+        // Misalnya, pastikan kategori buku yang dihapus adalah milik buku tersebut atau melakukan pengecekan lainnya
+
+        // Hapus kategori buku dari buku
+        KategoriBuku::where('kategori_id', $kategoriId)->delete();
+
+        return redirect()->back()->with('success', 'Kategori berhasil dihapus dari buku.');
+    }
+
+    return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk menghapus kategori.');
+}
+
+
 
     public function addbook(Buku $buku)
     {

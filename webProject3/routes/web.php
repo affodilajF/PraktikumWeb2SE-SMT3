@@ -66,6 +66,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/admin/buku/{id}/tambah-kategori', [BukuController::class, 'tambahKategori'])->name('tambah_kategori');
     Route::post('/admin/buku/{id}/simpan-kategori', [BukuController::class, 'simpanKategori'])->name('simpan_kategori');
+    Route::delete('/hapus-kategori', [BukuController::class, 'hapusKategori'])->name('hapus_kategori');
 
 
 

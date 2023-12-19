@@ -102,12 +102,30 @@
                 </div>
 
 
-                <div>
+                {{-- <div>
                     @foreach ($kategoriBuku as $kb)
                         <p>{{ $kb->kategori->nama_kategori }}</p>
                     @endforeach
 
+                </div> --}}
+
+
+                <div>
+                    @foreach ($kategoriBuku as $kb)
+                        <div class="flex justify-between items-center mb-2">
+                            <p>{{ $kb->kategori->nama_kategori }}</p>
+                            @if (Auth::check() && Auth::user()->level == 'admin')
+                                <form action="{{ route('hapus_kategori') }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" name="kategori_id" value="{{ $kb->kategori->id }}">
+                                    <button type="submit" class="bg-red-500 text-white font-bold py-1 px-2 rounded">Hapus</button>
+                                </form>
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
+
 
 
 
